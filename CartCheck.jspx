@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+	<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Your Cart | Foods"R"Us</title>
+<link rel="StyleSheet"
+	href="${pageContext.request.contextPath}/res/style.css" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Montserrat'
+	rel='stylesheet' type='text/css' />
+<link
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+	
+<script type="text/javascript">  
+ //<![CDATA[
+        var a = 1;          
+            function increase(x){
+            	var value = parseInt(document.getElementById(x).value, 10);
+                value = isNaN(value) ? 0 : value;
+                value++;
+                document.getElementById(x).value = value;
+                
+
+            }    
+            function decrease(x){
+
+            	var value = parseInt(document.getElementById(x).value, 10);
+            	
+                value = isNaN(value) ? 0 : value;
+                value--;
+                
+                if(value >=0){
+                document.getElementById(x).value = value;
+                }
+                
+
+            } 
+            
+            function checkCartValue(quantity_index)
+            {
+            	var ok = true;
+            	var p = parseInt(document.getElementById(quantity_index).value);
+            	if (p < 0)
+            	{
+            		alert("Quantity invalid!\n");
+            		//document.getElementById("princi").innerHTML = "<p><font color='red' size='4'>Principle invalid!</font></p>";
+            		ok = false;
+            	}
+            	return ok
+            }
+            //]]>
+</script>
+</head>
+<body>
+
+	<!--  Nav bar starts here -->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/Front/">Foods"R"Us</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="${pageContext.request.contextPath}/Front/">Home</a></li>
+					<li><a href="${pageContext.request.contextPath}/Front#categories">Categories</a></li>
+
+				</ul>
+				<form class="navbar-form navbar-left" role="search" action="">
+					<div class="form-group">
+						<c:choose>
+							<c:when test='${searchstring != null}'>
+								<input name="searchstring" type="text" class="form-control"
+									value="${searchstring}" />
+							</c:when>
+							<c:otherwise>
+								<input name="searchstring" type="text" class="form-control"
+									placeholder="Search our items" />
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<button name="searchbutton" type="submit" class="btn btn-default">Search</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a>View
+							Cart <span class="badge">${CartSize}</span>
+					</a></li>
+					<li><a href="">Checkout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!--  Nav bar ends here -->
+
+
+
+	<div class="container">
+		<div class="col-md-12 col-sm-12">
+			<div class="page-header">
+				<h1>Review Your Cart</h1>
+
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.request.contextPath}/Front/">Home</a></li>
+					<li><a href="${pageContext.request.contextPath}/Front#categories">Categories</a></li>
+					<li class="text-success">Review Cart</li>
+					<li class="text-muted">Submit Order</li>
+				</ol>
+			</div>
+			
+			
+			<c:if test="${not empty suggested}">
+			<div class="col-md-8">
+				<div class="well">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-4">
+									<h4>ALSO TRY OUR SPECIAL ITEM</h4>
+									<h4>${suggested.name}
+										<small> ${suggested.number}"</small>
+									</h4>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:if>
+			
+			<div class="col-md-8">
+			<form id="UPDATECART" action="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx" method="GET">
+				<c:forEach items="${RequestCartItems}" var="i" varStatus="s">
+					<div class="well">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-4">
+									<h4>${i.value.name}
+										<small> ${i.value.number}"</small>
+									</h4>
+								</div>
+								<div class="col-md-3">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-btn">
+													<button onclick="decrease(${s.index})" type="button"
+														class="btn btn-danger btn-number" data-type="minus"
+														data-field="quant[2]">
+														<span class="glyphicon glyphicon-minus" />
+													</button>
+												</span> <input type="text" id="${s.index}" name="${i.value.number}"
+													class="form-control input-number"
+													value="${i.value.quantity}" min="0" max="100" /> <span
+													class="input-group-btn">
+													<button onclick="increase(${s.index})" type="button"
+														class="btn btn-success btn-number" data-type="plus"
+														data-field="quant[2]">
+														<span class="glyphicon glyphicon-plus" />
+													</button>
+												</span>
+
+											</div>
+										
+													
+
+										</div>
+									
+								</div>
+								<div class="col-md-2">
+									<h4>$${i.value.price}</h4>
+								</div>
+								<div class="col-md-3">
+									<h4>Total: $${i.value.priceTotal}</h4>
+								</div>
+								
+								
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+				<button form="UPDATECART" type="submit"  name="update" value="true"
+														class="btn btn-block btn-xs btn-default"
+														data-field="quant[2]">
+														Update 
+													</button>
+													</form>
+			</div>
+			
+			<div id="positionFixed" class="col-md-4 ">
+			
+			
+				<div class="panel panel-default">
+					<div class="panel-heading">Review Your Order</div>
+					<div class="panel-body">
+					<p>Total before tax: $${RequestTotalCartPrice}</p>
+					<p>HST: $${RequestHST}</p>
+					<p>Shipping: $${RequestShipping}</p>
+					
+					</div>
+					
+					<div class="panel-footer">
+					<p class="text-left">Total Cost: $${RequestGrandTotal}	</p>
+					<a href="${pageContext.request.contextPath}/Front#categories" class="btn btn-block btn-warning" type="submit" value=""
+										name="">Continue Shopping</a>
+										<p></p>
+					<form action="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx" method="GET">
+					<button class="btn btn-block btn-success" type="submit" value="1" name="submitOrder">Checkout</button>
+					</form>
+					</div>
+				</div>
+
+			
+			</div>
+
+			
+
+		</div>
+	</div>
+
+</body>
+	</html>
+</jsp:root>
+<!-- 
+
+<form>
+	<table border="1">
+	<th>ITEM NUMBER</th>
+	<th>ITEM NAME</th>
+	<th>PRICE</th>
+	<th>QUANTITY</th>
+	<th>TOTAL PRICE</th>
+		<c:forEach items="${RequestCartItems}" var="i">
+			<tr>
+				<td><c:out value="${i.value.number}"/></td>
+				<td><c:out value="${i.value.name}"/></td>
+				<td><c:out value="${i.value.price}"/></td>
+				<td><input type="text" class="quantity-input" value="${i.value.quantity}"/></td>
+				 <td><c:out value="${i.value.priceTotal}"/></td> 
+			</tr>
+		</c:forEach>
+		
+	</table>
+	<p>The total ${RequestTotalCartPrice}</p>
+</form>
+
+ -->

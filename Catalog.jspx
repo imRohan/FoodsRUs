@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+	<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Foods R Us</title>
+<link rel="StyleSheet"
+	href="${pageContext.request.contextPath}/res/style.css" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Montserrat'
+	rel='stylesheet' type='text/css' />
+</head>
+<body>
+<!--  Nav bar starts here -->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Foods"R"Us</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="${pageContext.request.contextPath}/Front/">Home</a></li>
+
+				</ul>
+				<form class="navbar-form navbar-left" role="search" action="">
+					<div class="form-group">
+						<input name= "searchstring" type="text" class="form-control"
+							placeholder="Search Our Products" />
+					</div>
+					<button name="searchbutton" type="submit" class="btn btn-default">Search</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx?forward=0">View Cart <span class="badge">${CartSize}</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!--  Nav bar ends here -->
+	<div class="container">
+	<div class="page-header">
+		<h1>Welcome to Foods R Us</h1>
+		</div>
+		<div class="col-md-12 col-sm-12">
+			<div class="col-md-9 col-sm-12">
+				<div class="foodSlider">
+					<img class='photo'
+						src="${pageContext.request.contextPath}/res/img/01.jpg" alt="" />
+					<img class='photo'
+						src="${pageContext.request.contextPath}/res/img/02.jpg" alt="" />
+					<img class='photo'
+						src="${pageContext.request.contextPath}/res/img/03.jpg" alt="" />
+					<img class='photo'
+						src="${pageContext.request.contextPath}/res/img/04.jpg" alt="" />
+					<img class='photo'
+						src="${pageContext.request.contextPath}/res/img/05.jpg" alt="" />
+
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-12">
+
+
+
+				<div class="panel panel-success">
+					<div class="panel-heading">Why Shop With Us?</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<li class="list-group-item">1. Learn exciting new recipes
+								each week, created with care by our test kitchen team</li>
+							<li class="list-group-item">2. Our experts source the best
+								seasonal ingredients directly from farms, importers and
+								family-run purveyors</li>
+							<li class="list-group-item">3. Let us do the legwork! We'll
+								send all the ingredients you need in the exact amounts</li>
+								<li class="list-group-item">4. We're always improving!</li>
+
+
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	
+
+	<div class="col-md-12 col-sm-12">
+		<a name="categories"/>
+		<hr />
+		<!-- Page Features -->
+		<h2>Produce Categories</h2>
+		<div class="row text-center">
+		
+		
+			<c:if test="${SUCCESS}">
+
+				<c:forEach items="${CATEGORY_NAME_LIST}" varStatus="s">
+					<div class="col-md-3 col-sm-6 hero-feature">
+						<div class="thumbnail">
+							<img src="${pageContext.request.contextPath}/imgs/${s.index}.gif" alt="" />
+							<div class="caption">
+								<h3><strong>${CATEGORY_NAME_LIST[s.index]}</strong></h3>
+								<p id="captionText">
+									<c:out value="${CATEGORY_DESCRIPTION_LIST[s.index]}" />
+								</p>
+								<p></p>
+								<form action="" method="GET">
+									<button class="btn btn-block btn-success" type="submit" value="${CATEGORY_ID_LIST[s.index]}"
+										name="CatOption">View our ${CATEGORY_NAME_LIST[s.index]} Category</button>
+										
+								</form>
+								<p></p>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</c:if>
+		
+		</div>
+	</div>
+	</div>
+</body>
+
+	</html>
+</jsp:root>
+
+
+
+<!-- <form action="" method="get">
+	<table border="1" style="width:100%">
+	<th>Name</th>
+	<th>Description</th>
+	<th>Picture</th>
+	<c:forEach items="${CATEGORY_NAME_LIST}" varStatus="s">
+	<tr>
+	<td><button type="submit" value="${CATEGORY_ID_LIST[s.index]}" name="CatOption">${CATEGORY_NAME_LIST[s.index]}</button></td>
+	<td><c:out value="${CATEGORY_DESCRIPTION_LIST[s.index]}"/></td>
+	<td><c:out value="${CATEGORY_PICTURE_LIST[s.index]}"/></td>
+	</tr>
+	</c:forEach>
+	</table>
+	
+</form> -->

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output doctype-root-element="html"
+		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+		omit-xml-declaration="true" />
+	<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>${ITEM_CAT} | Foods"R"US</title>
+<link rel="StyleSheet"
+	href="${pageContext.request.contextPath}/res/style.css" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Montserrat'
+	rel='stylesheet' type='text/css' />
+<link
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+
+<script type="text/javascript">  
+ //<![CDATA[
+        var a = 1;          
+            function increase(x){
+            	var value = parseInt(document.getElementById(x).value, 10);
+                value = isNaN(value) ? 0 : value;
+                value++;
+                document.getElementById(x).value = value;
+                
+
+            }    
+            function decrease(x){
+
+            	var value = parseInt(document.getElementById(x).value, 10);
+            	
+                value = isNaN(value) ? 0 : value;
+                value--;
+                
+                if(value >=1){
+                document.getElementById(x).value = value;
+                }
+                
+
+            } 
+            
+            function checkCartValue(quantity_index)
+            {
+            	var ok = true;
+            	var p = parseInt(document.getElementById(quantity_index).value);
+            	if (p < 1)
+            	{
+            		alert("Quantity invalid!\nValue should be greater than 0");
+            		//document.getElementById("princi").innerHTML = "<p><font color='red' size='4'>Principle invalid!</font></p>";
+            		ok = false;
+            	}
+            	return ok
+            }
+            //]]>
+</script>
+</head>
+<body>
+<!--  Nav bar starts here -->
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand"  href="${pageContext.request.contextPath}/Front/">Foods"R"Us</a>
+			</div>
+
+
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="${pageContext.request.contextPath}/Front/">Home</a></li>
+					<li><a href="${pageContext.request.contextPath}/Front#categories">Categories</a></li>
+
+				</ul>
+				<form class="navbar-form navbar-left" role="search" action="">
+					<div class="form-group">
+						<c:choose>
+							<c:when test='${searchstring != null}'>
+								<input name= "searchstring" type="text" class="form-control"
+									value="${searchstring}" />
+							</c:when>
+							<c:otherwise>
+								<input name= "searchstring" type="text" class="form-control"
+								placeholder="Search our items" />
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<button name="searchbutton" type="submit" class="btn btn-default">Search</button>
+				</form>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx?forward=0">View Cart <span class="badge">${CartSize}</span></a></li>
+					<li><a href="">Checkout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!--  Nav bar ends here -->
+	<div class="container">
+
+		<div class="col-md-12 col-sm-12">
+			<div class="page-header">
+				<c:choose>
+							<c:when test='${searchstring != null}'>
+							<h1>Items Matching "${searchstring}"</h1>
+								
+							</c:when>
+							<c:otherwise>
+								<h1>${ITEM_CAT} Category</h1>
+							</c:otherwise>
+						</c:choose>
+				
+				<ol class="breadcrumb">
+					<li class="text-info"><a href="${pageContext.request.contextPath}/Front/">Home</a></li>
+					<li class="text-info"><a href="${pageContext.request.contextPath}/Front#categories">Categories</a></li>
+					<c:choose>
+							<c:when test='${searchstring != null}'>
+							<li class="text-success">Item Search</li>
+								
+							</c:when>
+							<c:otherwise>
+								<li class="text-success">${ITEM_CAT} Category</li>
+							</c:otherwise>
+						</c:choose>
+					
+					<li class="text-muted"><a href="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx?forward=0">Review Cart</a></li>
+					<li class="text-muted">Submit Order</li>
+				</ol>
+			</div>
+
+
+			<div class="col-md-8 col-sm-12">
+			<c:choose>
+							<c:when test='${searchstring != null}'>
+							
+								<h4>
+					<span class="label label-info"><span class="badge">${ITEM_COUNT}</span>
+						products match your search query "${searchstring}"</span>
+
+				</h4>
+								
+							</c:when>
+							<c:otherwise>
+									<h4>
+					<span class="label label-info"><span class="badge">${ITEM_COUNT}</span>
+						New products in stock!</span>
+
+				</h4>
+							</c:otherwise>
+						</c:choose>
+			
+				
+
+
+				<c:forEach items="${ITEM_NAME_LIST}" varStatus="s">
+
+
+
+					<div class="well">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-6">
+										<h3 class="text-left">${ITEM_NAME_LIST[s.index]}<br /> <small>Product
+												Number: ${ITEM_NUMBER_LIST[s.index]}</small>
+										</h3> 
+										<p>Select Quantity</p>
+									</div>
+									<div class="col-md-6">
+									
+										<h2>
+											Price:$${ITEM_PRICE_LIST[s.index]}<br /> <small>Item
+												in Stock!</small>
+										</h2>
+
+
+
+									</div>
+								</div>
+								<form action="${pageContext.request.contextPath}/Front/Cart/CartCheck.jspx" method="GET">
+									<div class="col-md-6">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<button onclick="decrease(${s.index})" type="button"
+													class="btn btn-danger btn-number" data-type="minus"
+													data-field="quant[2]">
+													<span class="glyphicon glyphicon-minus" />
+												</button>
+											</span> <input type="text" id="${s.index}"  name="quantity"
+												class="form-control input-number" value="1" min="1" max="100" />
+											<span class="input-group-btn">
+												<button onclick="increase(${s.index})" type="button"
+													class="btn btn-success btn-number" data-type="plus"
+													data-field="quant[2]">
+													<span class="glyphicon glyphicon-plus" />
+												</button>
+											</span>
+										</div>
+	
+									</div>
+									<div class="col-md-6">
+	
+										<button type="submit" value="${s.index}" name="AddToCart" class="btn btn-block btn-success" onclick="return checkCartValue(${s.index})">Add
+											to Cart</button>
+	
+									</div>
+								</form>
+							</div>
+						</div>
+
+
+					</div>
+				</c:forEach>
+			</div>
+			<div class="col-md-4">
+			<c:choose>
+							<c:when test='${searchstring != null}'>
+							<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Find what you are looking for?</h3>
+					</div>
+					<div class="panel-body">
+						<p>If you did not find the product that you were looking for, please contact
+						us and we will galdly assist in helping you find it.</p>
+					</div>
+				</div>
+								
+							</c:when>
+							<c:otherwise>
+								<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Our ${ITEM_CAT} Guarantee</h3>
+					</div>
+					<div class="panel-body">
+						<p>Here at Foods"R"Us we strive to bring you the freshest
+							produce we can get our hands on. Our ${ITEM_CAT} has been
+							throughly tested and is backed by our 30-day hassle free return
+							policy. If you are not completely satisfied with your ${ITEM_CAT}
+							purchase, return it for a full refund. Our ${ITEM_CAT} can't be
+							beat!</p>
+					</div>
+				</div>
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+						<h3 class="panel-title">This Weeks Feature</h3>
+					</div>
+					<div class="panel-body">
+						<strong>${ITEM_NAME_LIST[2]}</strong><br /> <small>#${ITEM_NUMBER_LIST[2]}</small>
+						<p>With winter just around the bend, we here at Foods"R"Us
+							have slashed prices on our favorite item of the season, the
+							${ITEM_NAME_LIST[2]}. With its subtle flavors and its decadance,
+							this item is a crowd pleaser. Save now for this week only!</p>
+					</div>
+				</div>
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 class="panel-title">FAQ's</h3>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>Will the perishable items I receive be close to
+								the expiry date</strong><br /> Freshness is as important to us as it is
+							to you. In fact, we have a Freshness Guarantee, so you can be
+							sure your fresh items will arrive with a certain minimum number
+							of days left before expiry.
+						</p>
+						<p>
+							<strong>How and when do I pay for my groceries?</strong><br />
+							You can pay for your groceries online by VISA, MasterCard or
+							Amex. Or, pay at your door upon delivery by Interac (debit).
+						</p>
+					</div>
+				</div>
+							</c:otherwise>
+						</c:choose>
+				
+			</div>
+
+
+
+
+		</div>
+	</div>
+
+
+</body>
+	</html>
+</jsp:root>
+
+
+<!-- 
+<table border="1" style="width: 100%">
+				<th>Number</th>
+				<th>Name</th>
+				<th>Price</th>
+				<c:forEach items="${ITEM_NAME_LIST}" varStatus="s">
+					<tr>
+						<td><c:out value="${ITEM_NUMBER_LIST[s.index]}" /></td>
+						<td><c:out value="${ITEM_NAME_LIST[s.index]}" /></td>
+						<td><c:out value="${ITEM_PRICE_LIST[s.index]}" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+ -->
